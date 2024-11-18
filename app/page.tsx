@@ -106,7 +106,8 @@ const HomePage: React.FC = () => {
   return (
     <>
       <div className="hidden md:block">
-        <Navbar />
+        {/* Pass setFilterModalOpen to Navbar as onClick */}
+        <Navbar onClick={() => setFilterModalOpen(true)} />
       </div>
       <div className="block md:hidden">
         <TopSearchBar
