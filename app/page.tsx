@@ -1,101 +1,153 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
+import { db, storage } from "../firebase.config";
+import BottomNav from "./components/bottom-navbar";
+import Navbar from "./components/navbar"; // Import Navbar
+import TopSearchBar from "./components/top-searchbar";
+import { FaStar } from "react-icons/fa6";
+import Footer from "./components/footer";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+interface HouseData {
+  location: string;
+  price: number;
+  title: string;
+  stars: number;
+  imageUrl: string;
 }
+
+const HomePage: React.FC = () => {
+  const [houseData, setHouseData] = useState<HouseData[]>([]);
+  const [favorites, setFavorites] = useState<{ [key: number]: boolean }>({});
+  const [searchTitle, setSearchTitle] = useState(""); // State to hold the search term
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchHouseData = async () => {
+      const houses: HouseData[] = [];
+
+      for (let i = 1; i <= 6; i++) {
+        const docSnap = await getDoc(doc(db, "listings", `house${i}`));
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const imageRef = ref(storage, `house${i}.jpg`);
+          const imageUrl = await getDownloadURL(imageRef);
+
+          houses.push({
+            location: data.location,
+            price: data.price,
+            title: data.title,
+            stars: parseFloat(data.stars),
+            imageUrl,
+          });
+        }
+      }
+
+      // Filter houses based on searchTitle
+      const filteredHouses = houses.filter((house) =>
+        house.title.toLowerCase().includes(searchTitle.toLowerCase())
+      );
+
+      setHouseData(filteredHouses); // Set the filtered houses
+    };
+
+    fetchHouseData();
+
+    const savedFavorites = JSON.parse(
+      localStorage.getItem("favorites") || "{}"
+    );
+    setFavorites(savedFavorites);
+  }, [searchTitle]); // Re-fetch data whenever the searchTitle changes
+
+  const handleFavoriteClick = (index: number, house: HouseData) => {
+    const updatedFavorites = { ...favorites, [index]: !favorites[index] };
+    setFavorites(updatedFavorites);
+
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+
+    const storedFavorites = JSON.parse(
+      localStorage.getItem("favoriteHouses") || "[]"
+    );
+
+    if (updatedFavorites[index]) {
+      storedFavorites.push({
+        title: house.title,
+        imageUrl: house.imageUrl,
+        location: house.location,
+        price: house.price,
+        stars: house.stars,
+      });
+    } else {
+      const indexToRemove = storedFavorites.findIndex(
+        (fav: any) => fav.title === house.title
+      );
+      if (indexToRemove !== -1) {
+        storedFavorites.splice(indexToRemove, 1);
+      }
+    }
+
+    localStorage.setItem("favoriteHouses", JSON.stringify(storedFavorites));
+  };
+
+  return (
+    <>
+      {/* Conditionally rendering based on screen size */}
+      <div className="hidden md:block">
+        <Navbar />
+      </div>
+      <div className="block md:hidden">
+        <TopSearchBar onSearch={(title: string) => setSearchTitle(title)} />{" "}
+        {/* Pass title to HomePage */}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-10 mb-11 mt-6">
+        {houseData.length > 0 ? (
+          houseData.map((house, index) => (
+            <div
+              className="relative mb-10"
+              key={index}
+              onClick={() => router.push(`/house/${index + 1}`)}
+            >
+              <div className="relative mb-4 w-full h-60">
+                <img
+                  src={house.imageUrl}
+                  alt={house.title}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                <FaStar
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleFavoriteClick(index, house);
+                  }}
+                  className={`absolute top-2 right-2 text-lg cursor-pointer ${
+                    favorites[index] ? "text-yellow-500" : "text-gray-400"
+                  }`}
+                />
+              </div>
+              <div>
+                <h2 className="flex-grow font-semibold">{house.title}</h2>
+                <p>Location: {house.location}</p>
+                <p>From {house.price}€ / night</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No houses found for this search.</p>
+        )}
+      </div>
+
+      <div className="block md:hidden">
+        <BottomNav />
+      </div>
+
+      <div className="hidden md:block">
+        <Footer />
+      </div>
+    </>
+  );
+};
+
+export default HomePage;

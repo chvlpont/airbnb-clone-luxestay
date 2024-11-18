@@ -5,6 +5,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Add custom font variables */
+  --font-playfair-display: "Playfair Display", serif;
+  --font-lato: "Lato", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,7 +21,16 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-lato), sans-serif; /* Apply Lato as the default font for body */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair-display), serif; /* Apply Playfair Display to all headers */
 }
 
 @layer utilities {

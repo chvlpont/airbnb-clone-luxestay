@@ -11,6 +11,11 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        backgroundGray: "#f5f5f5",
+        bottomNavbarGray: "#f0f0f0",
+        accent: "#068488",
+        buttonPrimary: "#222222",
+        navBar: "#f0f0f0",
       },
     },
   },

@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { ClerkProvider } from "@clerk/nextjs";
+import { BookingProvider } from "./context/BookingContext";
+import { Playfair_Display, Lato } from "next/font/google"; // Import fonts
+
 import "./globals.css";
 
+// Load local fonts
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -11,6 +16,19 @@ const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
+});
+
+// Load Google Fonts
+const playfairDisplay = Playfair_Display({
+  weight: ["400", "700"], // You can adjust the weights
+  subsets: ["latin"],
+  variable: "--font-playfair-display",
+});
+
+const lato = Lato({
+  weight: ["400", "700"], // Adjust weights as needed
+  subsets: ["latin"],
+  variable: "--font-lato",
 });
 
 export const metadata: Metadata = {
@@ -24,12 +42,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <BookingProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} ${lato.variable} antialiased bg-backgroundGray text-black`}
+          >
+            {children}
+          </body>
+        </html>
+      </BookingProvider>
+    </ClerkProvider>
   );
 }
