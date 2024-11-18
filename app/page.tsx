@@ -83,7 +83,22 @@ const HomePage: React.FC = () => {
     const updatedFavorites = { ...favorites, [index]: !favorites[index] };
     setFavorites(updatedFavorites);
 
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+    // Prepare favorite house data for saving
+    let storedFavorites = JSON.parse(
+      localStorage.getItem("favoriteHouses") || "[]"
+    );
+
+    if (updatedFavorites[index]) {
+      // Add to favorites if not already present
+      storedFavorites = [...storedFavorites, house];
+    } else {
+      // Remove from favorites if un-favorited
+      storedFavorites = storedFavorites.filter(
+        (fav: HouseData) => fav.title !== house.title
+      );
+    }
+
+    localStorage.setItem("favoriteHouses", JSON.stringify(storedFavorites));
   };
 
   // Handle search/filter submit
