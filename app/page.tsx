@@ -31,6 +31,7 @@ const HomePage: React.FC = () => {
   const [filterModalOpen, setFilterModalOpen] = useState<boolean>(false);
   const router = useRouter();
 
+  // Fetch house data and load favorites from localStorage
   useEffect(() => {
     const fetchHouseData = async () => {
       const houses: HouseData[] = [];
@@ -73,6 +74,7 @@ const HomePage: React.FC = () => {
 
     fetchHouseData();
 
+    // Retrieve favorites from localStorage
     const savedFavorites = JSON.parse(
       localStorage.getItem("favorites") || "{}"
     );
@@ -80,25 +82,30 @@ const HomePage: React.FC = () => {
   }, [searchTitle, minPrice, maxPrice, guests]); // Refetch data whenever any filter changes
 
   const handleFavoriteClick = (index: number, house: HouseData) => {
+    // Toggle favorite state
     const updatedFavorites = { ...favorites, [index]: !favorites[index] };
     setFavorites(updatedFavorites);
 
-    // Prepare favorite house data for saving
-    let storedFavorites = JSON.parse(
+    // Retrieve the current favorites from localStorage
+    let savedFavorites = JSON.parse(
       localStorage.getItem("favoriteHouses") || "[]"
     );
 
     if (updatedFavorites[index]) {
-      // Add to favorites if not already present
-      storedFavorites = [...storedFavorites, house];
+      // Add house to favorites
+      savedFavorites.push(house);
     } else {
-      // Remove from favorites if un-favorited
-      storedFavorites = storedFavorites.filter(
+      // Remove the house from favorites
+      savedFavorites = savedFavorites.filter(
         (fav: HouseData) => fav.title !== house.title
       );
     }
 
-    localStorage.setItem("favoriteHouses", JSON.stringify(storedFavorites));
+    // Save the updated list of favorites to localStorage
+    localStorage.setItem("favoriteHouses", JSON.stringify(savedFavorites));
+
+    // Save the updated favorites state in localStorage as well
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
   // Handle search/filter submit
@@ -107,15 +114,13 @@ const HomePage: React.FC = () => {
     guests: string,
     minPrice: string,
     maxPrice: string,
-    features: string[],
-    services: string[]
+    features: string[] = [],
+    services: string[] = []
   ) => {
     setSearchTitle(title); // Set search title
     setGuests(guests); // Set guests filter
     setMinPrice(minPrice); // Set min price filter
     setMaxPrice(maxPrice); // Set max price filter
-    // For features and services, you can implement similar logic if you want to filter based on these
-    // Example: filtering houses based on selected features or services
   };
 
   return (
@@ -155,12 +160,12 @@ const HomePage: React.FC = () => {
                 />
                 <FaStar
                   onClick={(e) => {
-                    e.stopPropagation();
-                    handleFavoriteClick(index, house);
+                    e.stopPropagation(); // Prevents triggering the parent div click
+                    handleFavoriteClick(index, house); // Toggle favorite
                   }}
                   className={`absolute top-2 right-2 text-lg cursor-pointer ${
                     favorites[index] ? "text-yellow-500" : "text-gray-400"
-                  }`}
+                  }`} // Gold if favorited, grey otherwise
                 />
               </div>
               <div>
