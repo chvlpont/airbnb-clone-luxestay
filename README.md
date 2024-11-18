@@ -1,6 +1,6 @@
 Airbnb Clone App
 Overview
-This project is a full-stack Airbnb clone application, developed using modern web technologies to deliver a seamless user experience. It replicates essential features of Airbnb, including user authentication, listing creation, and booking functionalities. The app leverages cutting-edge frameworks and tools to ensure scalability, maintainability, and responsiveness.
+This project is a full-stack responsive Airbnb clone application, developed using modern web technologies to deliver a seamless user experience. It replicates essential features of Airbnb, including user authentication, listing creation, and booking functionalities. 
 
 Tech Stack
 Frontend
@@ -19,3 +19,5 @@ Clerk: Simplifies user authentication and session management with secure, scalab
 Other Tools
 
 Context API: Enables global state management across the application, improving performance and developer experience.
+
+Note Product descriptions and images are borrowed from Google and may not be used without permission.
