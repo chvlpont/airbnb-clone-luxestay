@@ -6,14 +6,21 @@ import { IoFilter } from "react-icons/io5"; // Import the filter icon
 
 interface FilterModalProps {
   onClose: () => void; // Function to close the modal
-  onSearch: (searchTerm: string) => void; // Function to pass search title to HomePage
+  onSearch: (
+    searchTerm: string,
+    guests: string,
+    minPrice: string,
+    maxPrice: string,
+    features: string[],
+    services: string[]
+  ) => void; // Function to pass search parameters to HomePage
 }
 
 const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
   const [title, setTitle] = useState(""); // State to handle the title search input
-  const [minPrice, setMinPrice] = useState<number | string>(""); // Min price state
-  const [maxPrice, setMaxPrice] = useState<number | string>(""); // Max price state
-  const [guests, setGuests] = useState("Any"); // Guests state
+  const [minPrice, setMinPrice] = useState<string>(""); // Min price state
+  const [maxPrice, setMaxPrice] = useState<string>(""); // Max price state
+  const [guests, setGuests] = useState<string>("Any"); // Guests state
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]); // Selected features
   const [selectedServices, setSelectedServices] = useState<string[]>([]); // Selected services
 
@@ -32,7 +39,14 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
   };
 
   const handleSearch = () => {
-    onSearch(title); // Pass the search term to the HomePage component
+    onSearch(
+      title,
+      guests,
+      minPrice,
+      maxPrice,
+      selectedFeatures,
+      selectedServices
+    ); // Pass the search parameters to the HomePage
     onClose(); // Close the modal after the search
   };
 
@@ -122,7 +136,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
               </label>
               <div className="space-y-2 mb-2">
                 {[
-                  "Ocean View",
+                  "Beach view",
                   "Private pool",
                   "Helipad",
                   "Rooftop terrace",
@@ -153,9 +167,9 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
             <div className="space-y-2 mb-2">
               {[
                 "Private chef",
-                "Chauffeur",
-                "Boat / yacht rentals",
                 "In-house spa",
+                "Boat / yacht rentals",
+                "Chauffeur",
               ].map((service, index) => (
                 <label key={index} className="flex items-center cursor-pointer">
                   <input
@@ -176,13 +190,13 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
         <div className="flex gap-2 mt-4">
           <button
             className="bg-gray-200 text-gray-700 hover:bg-gray-300 p-2 rounded-lg flex-1"
-            onClick={onClose} // Close the modal
+            onClick={onClose}
           >
             Cancel
           </button>
           <button
             className="bg-accent text-white hover:bg-accentHover p-2 rounded-lg flex-1"
-            onClick={handleSearch} // Trigger search and close modal
+            onClick={handleSearch}
           >
             Search
           </button>

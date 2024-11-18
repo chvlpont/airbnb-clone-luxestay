@@ -7,9 +7,10 @@ import FilterModal from "./filter-modal";
 
 interface TopSearchBarProps {
   onSearch: (searchTerm: string) => void; // Function to handle search input in parent (HomePage)
+  onClick?: () => void; // Optional onClick handler
 }
 
-const TopSearchBar: React.FC<TopSearchBarProps> = ({ onSearch }) => {
+const TopSearchBar: React.FC<TopSearchBarProps> = ({ onSearch, onClick }) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
 
   const handleOpenModal = () => {
@@ -24,7 +25,7 @@ const TopSearchBar: React.FC<TopSearchBarProps> = ({ onSearch }) => {
     <div className="p-10 flex items-center">
       <div
         className="flex items-center rounded-full px-4 py-3 w-full bg-white shadow-md cursor-pointer"
-        onClick={handleOpenModal} // Open modal when clicked
+        onClick={onClick || handleOpenModal} // Use passed onClick if available, otherwise fallback to default
       >
         <FaMagnifyingGlass className="mr-2" />
         <span className="flex-grow">Where to?</span>
