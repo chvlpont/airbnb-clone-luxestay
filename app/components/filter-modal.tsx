@@ -157,7 +157,9 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
                   </label>
                 ))}
               </div>
-              <p className="underline text-[#068488] mb-2">Show more</p>
+              <p className="underline text-[#068488] mb-2 cursor-pointer">
+                Show more
+              </p>
             </div>
           </div>
 
@@ -184,7 +186,9 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
                 </label>
               ))}
             </div>
-            <p className="underline text-[#068488] mb-2">Show more</p>
+            <p className="underline text-[#068488] mb-2 cursor-pointer">
+              Show more
+            </p>
           </div>
         </div>
 
