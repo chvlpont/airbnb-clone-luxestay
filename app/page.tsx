@@ -104,7 +104,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <div className="hidden md:block">
         {/* Pass setFilterModalOpen to Navbar as onClick */}
         <Navbar onClick={() => setFilterModalOpen(true)} />
@@ -124,7 +124,7 @@ const HomePage: React.FC = () => {
         />
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-10 mb-11 mt-6">
+      <div className="flex-grow grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-10 mb-11 mt-6">
         {houseData.length > 0 ? (
           houseData.map((house, index) => (
             <div
@@ -164,10 +164,10 @@ const HomePage: React.FC = () => {
         <BottomNav />
       </div>
 
-      <div className="hidden md:block">
+      <div className="hidden md:block mt-auto">
         <Footer />
       </div>
-    </>
+    </div>
   );
 };
 

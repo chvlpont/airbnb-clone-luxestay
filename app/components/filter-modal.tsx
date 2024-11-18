@@ -95,7 +95,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
                 placeholder="Min"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value)}
-                className="max-w-32 border border-gray-400 p-2 rounded focus:ring-2 focus:ring-accent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="max-w-32 border border-gray-400 p-2 rounded focus:ring-2 focus:ring-[#068488] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
               <hr className="border-gray-400 w-4 items-center" />
               <input
@@ -103,7 +103,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
                 placeholder="Max"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
-                className="max-w-32 border border-gray-400 p-2 rounded focus:ring-2 focus:ring-accent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                className="max-w-32 border border-gray-400 p-2 rounded focus:ring-2 focus:ring-[#068488] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               />
             </div>
           </div>
@@ -114,13 +114,15 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
               Number of guests
             </label>
             <div className="space-x-5 place-self-center">
-              {["Any", 1, 2, 4, "8+"].map((label, index) => (
+              {["Any", "1", "2", "4", "8+"].map((label, index) => (
                 <button
                   key={index}
-                  className={`px-3 py-1 rounded-full border border-gray-400 min-w-16 bg-gray-100 text-gray-700 hover:bg-accent hover:text-white transition ${
-                    guests === label ? "bg-accent text-black" : ""
+                  className={`px-3 py-1 rounded-full border border-gray-400 min-w-16 bg-gray-100 text-gray-700 hover:bg-[#068488] hover:text-white transition ${
+                    guests === label
+                      ? "bg-[#068488] text-white" // Set background to blue-green when selected
+                      : ""
                   }`}
-                  onClick={() => setGuests(label.toString())}
+                  onClick={() => setGuests(label)} // Set value directly as the label
                 >
                   {label}
                 </button>
@@ -147,7 +149,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
                   >
                     <input
                       type="checkbox"
-                      className="mr-2 h-4 w-4 accent-accent hover:accent-accentHover"
+                      className="mr-2 h-4 w-4 accent-[#068488] hover:accent-[#068488]"
                       checked={selectedFeatures.includes(feature)}
                       onChange={() => handleFeatureChange(feature)}
                     />
@@ -155,7 +157,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
                   </label>
                 ))}
               </div>
-              <p className="underline text-accent mb-2">Show more</p>
+              <p className="underline text-[#068488] mb-2">Show more</p>
             </div>
           </div>
 
@@ -174,7 +176,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
                 <label key={index} className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
-                    className="mr-2 h-4 w-4 accent-accent hover:accent-accentHover"
+                    className="mr-2 h-4 w-4 accent-[#068488] hover:accent-[#068488]"
                     checked={selectedServices.includes(service)}
                     onChange={() => handleServiceChange(service)}
                   />
@@ -182,7 +184,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
                 </label>
               ))}
             </div>
-            <p className="underline text-accent mb-2">Show more</p>
+            <p className="underline text-[#068488] mb-2">Show more</p>
           </div>
         </div>
 
@@ -195,7 +197,7 @@ const FilterModal: React.FC<FilterModalProps> = ({ onClose, onSearch }) => {
             Cancel
           </button>
           <button
-            className="bg-accent text-white hover:bg-accentHover p-2 rounded-lg flex-1"
+            className="bg-[#068488] text-white hover:bg-[#066f73] p-2 rounded-lg flex-1"
             onClick={handleSearch}
           >
             Search
