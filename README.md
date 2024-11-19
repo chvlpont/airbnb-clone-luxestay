@@ -25,7 +25,7 @@ Firebase
 Auth:
 Clerk
 
-Other Tools
+Other Tools:
 Context API
 
 Note Product descriptions and images are borrowed from Google and may not be used without permission.
