@@ -1,23 +1,31 @@
-Airbnb Clone App
+Airbnb Clone App - LuxeStay
+
 Overview
-This project is a full-stack responsive Airbnb clone application, developed using modern web technologies to deliver a seamless user experience. It replicates essential features of Airbnb, including user authentication, listing creation, and booking functionalities. 
+This project is a comprehensive full-stack responsive application that replicates key features of Airbnb, built using modern web technologies for a smooth and user-friendly experience. The application was developed based on a design created collaboratively in Figma during a group project.
+
+Core Features:
+User Authentication: Users can register, log in, and manage their accounts.
+Property Listings: Users can browse through a variety of available properties.
+Filtering Options: Advanced filtering allows users to narrow down their search based on specific criteria, such as location, price, or amenities.
+Booking System: Users can book properties, cancel bookings, and view their booking history.
+Favorites: Properties can be added to or removed from a personal favorites list for easy access.
+Reviews: Users can leave and read reviews for listed properties.
 
 Tech Stack
-Frontend
+Frontend:
 
-Next.js: A powerful React framework for building server-side rendered (SSR) and static web applications.
-React: A popular JavaScript library for creating interactive user interfaces.
-TypeScript: A strongly typed superset of JavaScript that enhances code reliability and maintainability.
-Tailwind CSS: A utility-first CSS framework for creating custom and responsive designs with ease.
-React Icons: A collection of customizable SVG icons tailored for React applications.
+Next.js
+React
+TypeScript
+Tailwind CSS
 
-Backend
+Backend:
+Firebase
 
-Firebase: Provides real-time database management and cloud functions to support backend operations.
-Clerk: Simplifies user authentication and session management with secure, scalable solutions.
+Auth:
+Clerk
 
 Other Tools
-
-Context API: Enables global state management across the application, improving performance and developer experience.
+Context API
 
 Note Product descriptions and images are borrowed from Google and may not be used without permission.
