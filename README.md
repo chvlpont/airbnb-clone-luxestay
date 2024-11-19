@@ -28,4 +28,4 @@ Clerk
 Other Tools:
 Context API
 
-Note Product descriptions and images are borrowed from Google and may not be used without permission.
+Note Product images are borrowed from Google and may not be used without permission.
